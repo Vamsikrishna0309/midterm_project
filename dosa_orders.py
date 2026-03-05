@@ -8,11 +8,7 @@ args = parser.parse_args()
 with open(args.orders_file) as f:
     all_orders = json.load(f)
 
-phone_to_name = {}
-for order in all_orders:
-    phone = order["phone"]
-    customer_name = order["name"]
-    phone_to_name[phone] = customer_name
+phone_to_name = {order["phone"]: order["name"] for order in all_orders}
 
 with open("customers.json", "w") as f:
     json.dump(phone_to_name, f, indent=4)
@@ -32,5 +28,6 @@ with open("items.json", "w") as f:
     json.dump(food_summary, f, indent=4)
 
 print(f"items.json created with {len(food_summary)} items")
+
 top_item = max(food_summary, key=lambda x: food_summary[x]["orders"])
 print(f"Most popular item: {top_item} with {food_summary[top_item]['orders']} orders")
